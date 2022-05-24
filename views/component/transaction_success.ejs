@@ -1,0 +1,27 @@
+<div class="success-container">
+    <div class="success-title">
+        <h2><img src="../../img/check.svg" class="me-2" alt=""><b>Transaksi Sukses!</b></h2>
+        <h5>Nomor Transaksi: <%=result[0].id_transaksi%>/<%=result[0].nama_pelanggan%></h5>
+    </div>
+    <p class="mb-5">Berikut bukti transaksi pelanggan. Untuk selanjutnya akan diproses oleh juru masak</p>
+    <table class="table table-hover">
+        <tr>
+          <th scope="col">No</th>
+          <th scope="col">Jenis Makanan/Minuman</th>
+          <th scope="col">Harga</th>
+          <th scope="col">Jumlah</th>
+        </tr>
+        <%for(let e of result){%>
+        <tr>
+            <td><%=e.id_makanan%></td>
+            <td><%=e.jenis_makanan%></td>
+            <td><%=e.harga%></td>
+            <td><%=e.jumlah_beli%></td>
+        </tr>
+        <%}%>
+    </table>
+    <h1 class="text-end mt-4">Rp.<%=result[0].total_bayar%></h1>
+</div>
+<button class="btn btn-outline-danger mt-4">
+    Download PDF
+</button>

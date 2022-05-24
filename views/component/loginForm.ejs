@@ -1,0 +1,24 @@
+<div class="alert alert-danger alert-dismissible fade show" <%=isHidden%> role="alert" style="position: absolute; top: 6px">
+    <strong>Oops!</strong> Username/Password tidak valid
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<div class="container-login">
+    <div class="text-center">
+        <img src="../../img/brand2.svg" width="90px" class="mb-4" alt="">
+    </div>
+    <form method="post">
+        <div class="mb-3 text-center">
+            <h4>Login Admin</h4>
+            <div id="loginHelp" class="form-text">Silakan masukkan username dan password <br>yang telah terdaftar</div>
+        </div>
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" name="username" id="username">
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+        </div>
+        <button type="submit" class="btn btn-outline-danger">Login</button>
+      </form>
+</div>

@@ -1,0 +1,28 @@
+<a href="/report" <%=isSearched%>><img src="../../img/back.svg" class="mb-4" alt=""></a>
+<div class="mb-3">
+    <form method="post">
+        <div class="input-group mb-3">
+            <input type="search" class="form-control" name="search" placeholder="Cari Riwayat Transaksi (Berdasarkan nama/ID)" aria-label="Cari" aria-describedby="button-addon2" value="<%=searchField%>">
+            <button class="btn btn-danger" type="submit" id="button-addon2" name>Cari Transaksi</button>
+        </div>
+    </form>
+<div class="table-container">
+<table class="table table-hover">
+          <tr>
+            <th scope="col">Id transaksi</th>
+            <th scope="col">Tanggal transaksi</th>
+            <th scope="col">Nama Pelanggan</th>
+            <th scope="col">Total Bayar</th>
+            <th scope="col"></th>
+          </tr>
+          <% for (let e of result){%>
+          <tr>
+            <th scope="row"><%=e.id_transaksi%></th>
+            <td><%=e.tanggal_transaksi.toDateString()%></td>
+            <td><%=e.nama_pelanggan%></td>
+            <td><%=e.total_bayar%></td>
+            <td><a href="/transaction/success/<%=e.id_transaksi%>" type="button" class="btn btn-outline-danger">Detail</a></td>
+          </tr>
+          <%}%>
+      </table>
+</div>

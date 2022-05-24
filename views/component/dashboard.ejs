@@ -1,0 +1,54 @@
+<div class="container-dashboard">
+    <div class="row quick-info">
+        <div class="col">
+            <%for(let e of totalPendapatan){%>
+            <h1><b><%=e.total%></b></h1>
+            <%}%>
+            <hr>
+            <p>Total Pendapatan (Rp.)</p>
+        </div>
+        <div class="col">
+            <h1><b><%=infoTransaksi.length%></b></h1>
+            <hr>
+            <p>Jumlah Transaksi</p>
+        </div>
+        <div class="col">
+            <h1><b><%=infoMakanan.length%></b></h1>
+            <hr>
+            <p>Jenis Makanan/Minuman</p>
+        </div>
+    </div>
+    <div class="row">
+            <div class="table-container text-end">
+                <div class="dashtable-title">
+                    <h4><b>Riwayat Transaksi Terbaru</b></h4>
+                    <a href="/report" class="btn btn-outline-danger">Lihat Selengkapnya</a>
+                </div>
+                <table class="table table-hover">
+                      <tr>
+                        <th scope="col">Id transaksi</th>
+                        <th scope="col">Tanggal transaksi</th>
+                        <th scope="col">Nama Pelanggan</th>
+                        <th scope="col">Total Bayar</th>
+                      </tr>
+                      <% for (let e of infoTransaksi){%>
+                        <tr>
+                          <th scope="row"><%=e.id_transaksi%></th>
+                          <td><%=e.tanggal_transaksi.toDateString()%></td>
+                          <td><%=e.nama_pelanggan%></td>
+                          <td><%=e.total_bayar%></td>
+                        </tr>
+                        <%}%>
+                  </table>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-danger"><center>Stok Makanan/Minuman</center></li>
+                <% for(let e of infoMakanan){%>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      <%=e.jenis_makanan%>
+                      <span class="badge bg-primary rounded-pill"><%=e.stok%></span>
+                    </li>
+                <%}%>
+              </ul>
+    </div>
+</div>

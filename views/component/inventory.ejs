@@ -1,0 +1,22 @@
+<a href="/inventory/add" type="button" class="btn btn-primary mb-4">Tambah Makanan</a>
+<div class="table-container text-end">
+    <table class="table table-hover">
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">Jenis Makanan/Minuman</th>
+            <th scope="col">Harga</th>
+            <th scope="col">Stok</th>
+            <th scope="col"></th>
+          </tr>
+          <% for (let e of result){%>
+          <tr>
+            <th scope="row"><%=e.id_makanan%></th>
+            <td><%=e.jenis_makanan%></td>
+            <td><%=e.harga%></td>
+            <td><%=e.stok%></td>
+            <td><a href="/inventory/edit/<%=e.id_makanan%>" type="button" class="btn btn-success">Ubah</a>
+            <a href="/inventory/delete/<%=e.id_makanan%>" type="button" class="btn btn-danger">Hapus</a></td>
+          </tr>
+          <%}%>
+      </table>
+</div>

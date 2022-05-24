@@ -1,0 +1,20 @@
+<%for(let e of result){%>
+<div class="add-container">
+    <form method="post" action="/inventory/edit/">
+      <input type="hidden" class="form-control" id="hidden" name="hidden" value="<%=e.id_makanan%>">
+        <div class="mb-3">
+          <label for="jenisMakanan" class="form-label">Jenis Makanan</label>
+          <input type="text" class="form-control" id="jenisMakanan" name="jenis_makanan" value="<%=e.jenis_makanan%>">
+        </div>
+        <div class="mb-3">
+            <label for="hargaMakanan" class="form-label">Harga</label>
+            <input type="number" class="form-control" id="hargaMakanan" name="harga" value="<%=e.harga%>">
+          </div>
+          <div class="mb-3">
+            <label for="stokMakanan" class="form-label">Stok</label>
+            <input type="number" class="form-control" id="stokMakanan" name="stok" value="<%=e.stok%>">
+          </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+</div>
+<%}%>

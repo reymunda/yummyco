@@ -1,0 +1,34 @@
+<div class="alert alert-danger alert-dismissible fade show" role="alert" <%=isError%>>
+    <strong>Error!</strong> Stok yang tersedia tidak cukup
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<div class="add-container">
+    <form method="post">
+        <div class="mb-3">
+          <label for="jenisMakanan" class="form-label">Nama Pelanggan</label>
+          <input type="text" class="form-control" id="namaPelanggan" name="namaPelanggan">
+        </div>
+        <div class="mb-3">
+            <label for="hargaMakanan" class="form-label">Tanggal</label>
+            <input type="date" class="form-control" id="tanggal" disabled value="<%=new Date().toISOString().slice(0,10)%>" name="tanggal">
+        </div>
+          <%for(let e of result){%>
+            <%if(e.stok == 0){%>
+                <div class="input-group mb-3">
+                    <input type="hidden" name="hidden" value="<%=e.id_makanan%>">
+                    <span class="input-group-text"><%=e.jenis_makanan%></span>
+                    <input type="number" readonly class="form-control" id="<%=e.jenis_makanan%>" placeholder="Isi jumlah beli" name="jumlahBeli" value="0">
+                    <span class="input-group-text">Stok saat ini: HABIS</span>
+                </div>
+            <%}else{%>
+          <div class="input-group mb-3">
+            <input type="hidden" name="hidden" value="<%=e.id_makanan%>">
+            <span class="input-group-text"><%=e.jenis_makanan%></span>
+            <input type="number" class="form-control" id="<%=e.jenis_makanan%>" placeholder="Isi jumlah beli" name="jumlahBeli" value="0">
+            <span class="input-group-text">Stok saat ini: <%=e.stok%></span>
+          </div>
+          <%}%>
+          <%}%>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+</div>
