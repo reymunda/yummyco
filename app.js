@@ -38,16 +38,12 @@ db.connect(err => {
     if(err){
         throw err
     }else{
-        console.log('database connected')
-        
         db.query('SELECT * FROM makanan', (err, result) => {
-            console.log(`Data makanan: ${JSON.stringify(result)}`)
             let transaction_iterate
             app.get('/transaction', (req, res) => {
                 if(req.session.userinfo){
                     db.query(`SELECT MAX(id_transaksi) as iterasi from transaksi`,(err, result) => {
                         for(let e of result){
-                            console.log(e.iterasi)
                             if(e.iterasi == null){
                                 transaction_iterate = 1
                             }else{
@@ -73,9 +69,7 @@ db.connect(err => {
                 let totalBayar = 0
                 let i = 0
                 for(let e of result){
-                    console.log(req.body.jumlahBeli[i])
                     if(req.body.jumlahBeli[i] > e.stok){
-                        console.log("Maaf ga cukup")
                         res.render('component/transaction', {
                             layout: "layouts/main",
                             title: "Kelola Transaksi",
@@ -90,13 +84,11 @@ db.connect(err => {
                     }
                     i++
                 }
-                console.log(totalBayar)
                 db.query(`INSERT INTO transaksi(nama_pelanggan,tanggal_transaksi,total_bayar) VALUES ('${req.body.namaPelanggan}','${new Date().toISOString().slice(0,10)}','${totalBayar}')`)
                 req.body.hidden.forEach((e,i) => {
                   db.query(`SELECT MAX(id_transaksi) as iterasi from transaksi`,(err, idTransaksi) => {
                      for(let j of idTransaksi){
                          db.query(`INSERT INTO detail_transaksi(id_transaksi,id_makanan,jumlah_beli) VALUES (${j.iterasi},${e},'${req.body.jumlahBeli[i]}')`)
-                         console.log('anjing: ' + j.iterasi)
                         } 
                     })
                 })
@@ -123,7 +115,6 @@ db.connect(err => {
                             layout: "layouts/main",
                             result
                         })
-                        console.log(transaction_iterate)
                     })
                 }else{
                     res.redirect('/login')
@@ -222,20 +213,33 @@ db.connect(err => {
                 res.redirect('/login')
             }
         })
+        app.get('/delivery',(req,res) => {
+            if(req.session.userinfo){
+                db.query(`SELECT * FROM transaksi`, (err, result) => {
+                    res.render('component/ongkir', {
+                        title: "Cek Ongkir",
+                        layout: "layouts/main",
+                        result
+                    });
+                })
+            }
+        })
         app.get('/', (req,res) => {
             if(req.session.userinfo){
                 db.query(`SELECT SUM(total_bayar) AS total from transaksi`, (err, totalPendapatan) => {
+                    db.query('SELECT * from transaksi', (err, dataTransaksi) =>{
                     db.query(`SELECT * from transaksi ORDER BY tanggal_transaksi DESC LIMIT 5`, (err, infoTransaksi) => {
                         db.query(`SELECT id_makanan, jenis_makanan, stok from makanan`, (err, infoMakanan) => {
-                            console.log(infoMakanan)
                             res.render('component/dashboard', {
                                 title: "Dashboard",
                                 layout: "layouts/main",
                                 totalPendapatan,
                                 infoTransaksi,
+                                dataTransaksi,
                                 infoMakanan
                             })
                         })
+                    })
                     })
                 })
             }else{
@@ -249,7 +253,6 @@ db.connect(err => {
             })
         })
         app.post('/login',(req, res) => {
-            console.log("test")
             db.query(`SELECT username, password FROM login_user`,(err, result) => {
                 // [username, password] = ...result;
                 let username = result[0].username;
@@ -262,7 +265,6 @@ db.connect(err => {
                     })
                 }else{
                     req.session.userinfo = result[0].username
-                    console.log('session user info: ' + req.session.userinfo)
                     res.redirect('/')
                 }
             })  
@@ -279,5 +281,5 @@ db.connect(err => {
     // })
 })
 app.listen(3004,() => {
-    console.log('Server ready')
+    console.log('App running http://localhost:3004')
 })

@@ -1,0 +1,34 @@
+<div class="add-container">
+    <form method="post">
+        <div class="mb-3">
+            <label for="selectTransaction" class="form-label">Transaksi Restoran</label>
+            <select id="selectTransaction" class="form-select">
+              <option>--Pilih Transaksi--</option>
+              <% for (let e of result){%>
+                <option value="<%=e.id_transaksi%>"><%=e.id_transaksi%> - <%=e.nama_pelanggan%></option>
+            <%}%>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="hargaMakanan" class="form-label">Dikirim dari</label>
+            <input type="text" class="form-control" id="cityFrom" disabled value="Bandung, Jawa Barat" name="tanggal">
+        </div>
+        <div class="mb-3">
+            <label for="selectTransaction" class="form-label">Provinsi Tujuan</label>
+            <select id="selectTransaction" class="form-select">
+              <option>--Pilih Provinsi--</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="selectTransaction" class="form-label">Kota Tujuan</label>
+            <select id="selectTransaction" class="form-select">
+              <option>--Pilih Kota--</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Alamat lengkap</label>
+            <textarea type="text" class="form-control" id="namaPelanggan" name="alamat"></textarea>
+          </div>
+        <button type="submit" class="btn btn-primary">Cek Ongkir</button>
+      </form>
+</div>
