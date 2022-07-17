@@ -1,5 +1,6 @@
 const express = require('express')
 const mysql = require('mysql')
+const axios = require('axios')
 const expressLayout = require('express-ejs-layouts')
 const { redirect } = require('express/lib/response')
 const session = require('express-session')
@@ -213,13 +214,26 @@ db.connect(err => {
                 res.redirect('/login')
             }
         })
-        app.get('/delivery',(req,res) => {
+        app.get('/delivery',async (req,res) =>{
             if(req.session.userinfo){
+                let province
+                let city
+                await axios.get('https://api.rajaongkir.com/starter/province?key=7b8d650935e3fa791e1d3afaf612cede')
+                    .then(e => {
+                        province = e.data.rajaongkir.results
+                })
+                await axios.get('https://api.rajaongkir.com/starter/city?key=7b8d650935e3fa791e1d3afaf612cede')
+                    .then(e => {
+                        city = e.data.rajaongkir.results
+                })
+        
                 db.query(`SELECT * FROM transaksi`, (err, result) => {
                     res.render('component/ongkir', {
                         title: "Cek Ongkir",
                         layout: "layouts/main",
-                        result
+                        result,
+                        province,
+                        city
                     });
                 })
             }

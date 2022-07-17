@@ -17,12 +17,18 @@
             <label for="selectTransaction" class="form-label">Provinsi Tujuan</label>
             <select id="selectTransaction" class="form-select">
               <option>--Pilih Provinsi--</option>
+              <% for (let e of province){%>
+                <option value="<%=e.province_id%>"><%=e.province_id%> - <%=e.province%></option>
+            <%}%>
             </select>
         </div>
         <div class="mb-3">
             <label for="selectTransaction" class="form-label">Kota Tujuan</label>
             <select id="selectTransaction" class="form-select">
               <option>--Pilih Kota--</option>
+              <% for (let e of city){%>
+                <option value="<%=e.city_id%>"><%=e.city_id%> - <%=e.city_name%></option>
+            <%}%>
             </select>
         </div>
         <div class="mb-3">
