@@ -1,6 +1,5 @@
 const express = require('express')
 const mysql = require('mysql')
-const axios = require('axios')
 const expressLayout = require('express-ejs-layouts')
 const { redirect } = require('express/lib/response')
 const session = require('express-session')
