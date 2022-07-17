@@ -2,7 +2,7 @@
     <form method="post">
         <div class="mb-3">
             <label for="selectTransaction" class="form-label">Transaksi Restoran</label>
-            <select id="selectTransaction" class="form-select">
+            <select id="selectTransaction" class="form-select" name="transaksi" required>
               <option>--Pilih Transaksi--</option>
               <% for (let e of result){%>
                 <option value="<%=e.id_transaksi%>"><%=e.id_transaksi%> - <%=e.nama_pelanggan%></option>
@@ -14,26 +14,16 @@
             <input type="text" class="form-control" id="cityFrom" disabled value="Bandung, Jawa Barat" name="tanggal">
         </div>
         <div class="mb-3">
-            <label for="selectTransaction" class="form-label">Provinsi Tujuan</label>
-            <select id="selectTransaction" class="form-select">
-              <option>--Pilih Provinsi--</option>
-              <% for (let e of province){%>
-                <option value="<%=e.province_id%>"><%=e.province_id%> - <%=e.province%></option>
-            <%}%>
-            </select>
-        </div>
-        <div class="mb-3">
             <label for="selectTransaction" class="form-label">Kota Tujuan</label>
-            <select id="selectTransaction" class="form-select">
-              <option>--Pilih Kota--</option>
-              <% for (let e of city){%>
+            <select id="selectTransaction" class="form-select" required name="kota">
+              <% city.forEach(e =>{%>
                 <option value="<%=e.city_id%>"><%=e.city_id%> - <%=e.city_name%></option>
-            <%}%>
+            <%})%>
             </select>
         </div>
         <div class="mb-3">
             <label class="form-label">Alamat lengkap</label>
-            <textarea type="text" class="form-control" id="namaPelanggan" name="alamat"></textarea>
+            <textarea type="text" class="form-control" required id="namaPelanggan" name="alamat"></textarea>
           </div>
         <button type="submit" class="btn btn-primary">Cek Ongkir</button>
       </form>

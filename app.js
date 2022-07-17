@@ -5,6 +5,7 @@ const expressLayout = require('express-ejs-layouts')
 const { redirect } = require('express/lib/response')
 const session = require('express-session')
 const res = require('express/lib/response')
+var request = require("request");
 
 const app = express()
 
@@ -214,33 +215,62 @@ db.connect(err => {
                 res.redirect('/login')
             }
         })
-        app.get('/delivery',async (req,res) =>{
+        app.get('/delivery',(req,res) =>{
             if(req.session.userinfo){
-                let province
                 let city
-                await axios.get('https://api.rajaongkir.com/starter/province?key=7b8d650935e3fa791e1d3afaf612cede')
-                    .then(e => {
-                        province = e.data.rajaongkir.results
-                })
-                await axios.get('https://api.rajaongkir.com/starter/city?key=7b8d650935e3fa791e1d3afaf612cede')
-                    .then(e => {
-                        city = e.data.rajaongkir.results
-                })
-        
-                db.query(`SELECT * FROM transaksi`, (err, result) => {
-                    res.render('component/ongkir', {
-                        title: "Cek Ongkir",
-                        layout: "layouts/main",
-                        result,
-                        province,
-                        city
-                    });
-                })
+                var options = {
+                    method: 'GET',
+                    url: 'https://api.rajaongkir.com/starter/city',
+                    headers: {key: '7b8d650935e3fa791e1d3afaf612cede'}
+                  };
+                  
+                request(options, function (error, response, body) {
+                    if (error) throw new Error(error);
+                  
+                    city = JSON.parse(body).rajaongkir.results
+
+                    db.query(`SELECT transaksi.id_transaksi, transaksi.nama_pelanggan, delivery.id_delivery from delivery RIGHT JOIN transaksi ON delivery.id_transaksi = transaksi.id_transaksi WHERE id_delivery IS NULL`, (err, result) => {
+                        res.render('component/ongkir', {
+                            title: "Cek Ongkir",
+                            layout: "layouts/main",
+                            result,
+                            city
+                        });
+                    })
+                });
+                  
+    
+                
+            }
+        })
+        app.post('/delivery',(req,res) =>{
+            if(req.session.userinfo){
+
+            var options = {
+            method: 'POST',
+            url: 'https://api.rajaongkir.com/starter/cost',
+            headers: {key: '7b8d650935e3fa791e1d3afaf612cede', 'content-type': 'application/x-www-form-urlencoded'},
+            form: {origin: '22', destination: req.body.kota, weight: 1000, courier: 'jne'}
+            };
+
+            request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+
+            harga = JSON.parse(body).rajaongkir.results[0].costs[0].cost[0].value
+            province = JSON.parse(body).rajaongkir.destination_details.province
+            city = JSON.parse(body).rajaongkir.destination_details.city_name
+
+            db.query(`INSERT INTO delivery(id_transaksi,lokasi_tujuan,harga,alamat) VALUES (${req.body.transaksi},'${city}, ${province}',${harga}, '${req.body.alamat}')`,(err,result) => {
+                res.redirect(`/delivery/check/${req.body.transaksi}`)
+            })
+                
+            });
+
             }
         })
         app.get('/delivery/check/:id_transaksi', (req,res) => {
             if(req.session.userinfo){
-                db.query(`SELECT detail_transaksi.id_transaksi, makanan.id_makanan, tanggal_transaksi, nama_pelanggan, jenis_makanan, jumlah_beli,harga, total_bayar from transaksi JOIN detail_transaksi ON detail_transaksi.id_transaksi = transaksi.id_transaksi JOIN makanan ON makanan.id_makanan = detail_transaksi.id_makanan WHERE transaksi.id_transaksi=${req.params.id_transaksi}`, (err,result) =>{
+                db.query(`SELECT transaksi.id_transaksi, transaksi.nama_pelanggan, delivery.* from delivery JOIN transaksi ON delivery.id_transaksi = transaksi.id_transaksi WHERE delivery.id_transaksi = ${req.params.id_transaksi}`, (err,result) =>{
                     res.render('component/deliveryCheck', {
                         title: "Hasil Transaksi",
                         layout: "layouts/main",

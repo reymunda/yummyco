@@ -8,11 +8,13 @@
         <tr>
             <th>Lokasi Asal</th>
             <th>Lokasi Tujuan</th>
+            <th>Alamat Lengkap</th>
         </tr>
         <tr>
             <td>Bandung, Jawa Barat</td>
-            <td></td>
+            <td><%=result[0].lokasi_tujuan%></td>
+            <td><%=result[0].alamat%></td>
         </tr>
     </table>
-    <h1 class="text-end mt-4">Rp.</h1>
+    <h1 class="text-end mt-4">Rp.<%=result[0].harga%></h1>
 </div>
