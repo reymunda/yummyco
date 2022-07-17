@@ -224,6 +224,17 @@ db.connect(err => {
                 })
             }
         })
+        app.get('/delivery/check/:id_transaksi', (req,res) => {
+            if(req.session.userinfo){
+                db.query(`SELECT detail_transaksi.id_transaksi, makanan.id_makanan, tanggal_transaksi, nama_pelanggan, jenis_makanan, jumlah_beli,harga, total_bayar from transaksi JOIN detail_transaksi ON detail_transaksi.id_transaksi = transaksi.id_transaksi JOIN makanan ON makanan.id_makanan = detail_transaksi.id_makanan WHERE transaksi.id_transaksi=${req.params.id_transaksi}`, (err,result) =>{
+                    res.render('component/deliveryCheck', {
+                        title: "Hasil Transaksi",
+                        layout: "layouts/main",
+                        result
+                    })
+                })
+            }
+        })
         app.get('/', (req,res) => {
             if(req.session.userinfo){
                 db.query(`SELECT SUM(total_bayar) AS total from transaksi`, (err, totalPendapatan) => {
