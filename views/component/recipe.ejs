@@ -1,0 +1,20 @@
+<div class="mb-3">
+
+<div class="table-container">
+<table class="table table-hover">
+          <tr>
+            <th scope="col">Kode Resep</th>
+            <th scope="col">Gambar</th>
+            <th scope="col">Judul Resep</th>
+            <th scope="col"></th>
+          </tr>
+          <% result.forEach(e =>{%>
+          <tr>
+            <td><%=e.id%></td>
+            <td><img src="<%=e.image%>" alt="" width="200px"></td>
+            <td><%=e.title%></td>
+            <td><a href="/recipe/<%=e.id%>" type="button" class="btn btn-outline-danger">Detail</a></td>
+          </tr>
+          <%})%>
+      </table>
+</div>

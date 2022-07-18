@@ -1,0 +1,22 @@
+<div class="success-container">
+    <div class="success-title">
+        <h2><b>Detail Resep</b></h2>
+        <h5>Nomor Transaksi:</h5>
+    </div>
+    <p class="mb-5">Berikut bahan masakan yang perlu disiapkan</p>
+    <table class="table table-hover">
+        <tr>
+            <th>Kode Bahan</th>
+            <th>Nama Bahan</th>
+            <th>Takaran</th>
+        </tr>
+        <%results.forEach(e =>{%>
+        <tr>
+            <td><%=e.id%></td>
+            <td><%=e.nameClean%></td>
+            <td><%=e.amount%> <%=e.unit%></td>
+        </tr>
+        <%})%>
+    </table>
+    <h1 class="text-end mt-4"></h1>
+</div>

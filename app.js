@@ -240,6 +240,8 @@ db.connect(err => {
                   
     
                 
+            }else{
+                res.redirect('/login')
             }
         })
         app.post('/delivery',(req,res) =>{
@@ -265,6 +267,8 @@ db.connect(err => {
                 
             });
 
+            }else{
+                res.redirect('/login')
             }
         })
         app.get('/delivery/check/:id_transaksi', (req,res) => {
@@ -276,6 +280,51 @@ db.connect(err => {
                         result
                     })
                 })
+            }else{
+                res.redirect('/login')
+            }
+        })
+        app.get('/recipe', (req,res) => {
+            if(req.session.userinfo){
+                var options = {
+                    method: 'GET',
+                    url: 'https://api.spoonacular.com/recipes/complexSearch?apiKey=6e4139c311c241e8a01b232ab8b322d7'
+                  };
+                  request(options, function (error, response, body) {
+                    if (error) throw new Error(error);
+                    
+                    res.render('component/recipe', {
+                        title: "Daftar Resep",
+                        layout: "layouts/main",
+                        result: JSON.parse(body).results
+                    })
+                    console.log(JSON.parse(body).results)
+                        
+                    });
+            }else{
+                res.redirect('/login')
+            }
+        })
+        app.get('/recipe/:id', (req,res) => {
+            if(req.session.userinfo){
+                var options = {
+                    method: 'GET',
+                    url: `https://api.spoonacular.com/recipes/${req.params.id}/information?apiKey=6e4139c311c241e8a01b232ab8b322d7`
+                  };
+                  request(options, function (error, response, body) {
+                    if (error) throw new Error(error);
+                    
+                    console.log(JSON.parse(body).extendedIngredients)
+                    
+                    res.render('component/detail_recipe', {
+                        title: "Detail Resep",
+                        layout: "layouts/main",
+                        results: JSON.parse(body).extendedIngredients
+                    })
+                        
+                    });
+            }else{
+                res.redirect('/login')
             }
         })
         app.get('/', (req,res) => {
