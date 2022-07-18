@@ -307,9 +307,11 @@ db.connect(err => {
         })
         app.get('/recipe/:id', (req,res) => {
             if(req.session.userinfo){
+                let id = req.params.id.split("&")[0]
+                let title = req.params.id.split("&")[1]
                 var options = {
                     method: 'GET',
-                    url: `https://api.spoonacular.com/recipes/${req.params.id}/information?apiKey=6e4139c311c241e8a01b232ab8b322d7`
+                    url: `https://api.spoonacular.com/recipes/${id}/information?apiKey=6e4139c311c241e8a01b232ab8b322d7`
                   };
                   request(options, function (error, response, body) {
                     if (error) throw new Error(error);
@@ -319,6 +321,7 @@ db.connect(err => {
                     res.render('component/detail_recipe', {
                         title: "Detail Resep",
                         layout: "layouts/main",
+                        recipe_name: title,
                         results: JSON.parse(body).extendedIngredients
                     })
                         
